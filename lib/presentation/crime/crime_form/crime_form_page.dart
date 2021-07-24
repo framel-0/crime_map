@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:crime_map/application/crime/crime_watcher/crime_watcher_bloc.dart';
 import 'package:dartz/dartz.dart' as dtz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../application/crime/crime_form/crime_form_bloc.dart';
 import '../../../domain/crime/crime.dart';
@@ -32,12 +34,19 @@ class CrimeFormPage extends StatelessWidget {
           title: BlocBuilder<CrimeFormBloc, CrimeFormState>(
             buildWhen: (previous, current) =>
                 previous.isEditing != current.isEditing,
-            builder: (context, state) {
-              return Text(
-                  state.isEditing ? 'Edit an event' : 'Create an event');
+            builder: (ctx, state) {
+              return Text(state.isEditing ? 'Edit a Crime' : 'Add a Crime');
             },
           ),
-          actions: [],
+          actions: [
+            IconButton(
+              onPressed: () {
+                return BlocProvider.of<CrimeFormBloc>(context)
+                    .add(const CrimeFormEvent.saved());
+              },
+              icon: const Icon(Icons.check),
+            )
+          ],
         ),
         body: const CrimeFormPageScaffold(),
       ),
@@ -61,14 +70,28 @@ class CrimeFormPageScaffold extends StatelessWidget {
           (either) {
             either.fold(
               (failure) {
-                // return FlushbarHelper.createError(
-                //   message: failure.map(
-                //     unexpected: (_) => 'Unexpected',
-                //   ),
-                // ).show(context);
+                Fluttertoast.showToast(
+                  msg: failure.map(
+                    insufficientPermission: (_) => 'Insufficient Permission',
+                    unableToUpdate: (_) => 'Unable to Update',
+                    unexpected: (_) =>
+                        'Unexpected Error Occured, Please Contact Support',
+                  ),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.redAccent,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
               },
               (_) {
-                context.router.navigate(const CrimeMapRoute());
+                // context.router.pop();
+
+                context.router.popUntil(
+                    (route) => route.settings.name == CrimeMapRoute.name);
+                BlocProvider.of<CrimeWatcherBloc>(context).add(
+                  const CrimeWatcherEvent.watchAllCrimeStarted(),
+                );
               },
             );
           },

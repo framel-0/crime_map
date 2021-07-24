@@ -9,5 +9,4 @@ abstract class ICrimeRepository {
   Future<Either<CrimeFailure, Unit>> create(Crime crime);
   Future<Either<CrimeFailure, Unit>> update(Crime crime);
   Future<Either<CrimeFailure, Unit>> delete(Crime crime);
-  Future<bool> checkLocationPermission();
 }

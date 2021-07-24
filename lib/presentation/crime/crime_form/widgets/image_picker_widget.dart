@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerPage extends StatefulWidget {
-  ImagePickerPage({Key? key, this.title}) : super(key: key);
+  const ImagePickerPage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
@@ -16,7 +16,7 @@ class ImagePickerPage extends StatefulWidget {
 }
 
 class _ImagePickerPageState extends State<ImagePickerPage> {
-  PickedFile? _imageFile;
+  XFile? _imageFile;
   dynamic _pickImageError;
   String? _retrieveDataError;
 
@@ -25,26 +25,25 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   final TextEditingController maxHeightController = TextEditingController();
 
   void _onImageButtonPressed(ImageSource source, BuildContext context) async {
-    await _displayPickImageDialog(context, (
-      double? maxWidth,
-      double? maxHeight,
-    ) async {
-      try {
-        final pickedFile = await _picker.getImage(
-          source: source,
-          maxWidth: maxWidth,
-          maxHeight: maxHeight,
-          imageQuality: 80,
-        );
-        setState(() {
-          _imageFile = pickedFile;
-        });
-      } catch (e) {
-        setState(() {
-          _pickImageError = e;
-        });
-      }
-    });
+    try {
+      final pickedFile = await _picker.pickImage(
+        source: source,
+        imageQuality: 80,
+      );
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    } catch (e) {
+      setState(() {
+        _pickImageError = e;
+      });
+    }
+    // await _displayPickImageDialog(context, (
+    //   double? maxWidth,
+    //   double? maxHeight,
+    // ) async {
+
+    // });
   }
 
   @override
@@ -71,8 +70,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         return Image.network(_imageFile!.path);
       } else {
         return Semantics(
-            child: Image.file(File(_imageFile!.path)),
-            label: 'image_picker_example_picked_image');
+          label: 'image_picker_example_picked_image',
+          child: Image.file(File(_imageFile!.path)),
+        );
       }
     } else if (_pickImageError != null) {
       return Text(
@@ -88,7 +88,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Future<void> retrieveLostData() async {
-    final LostData response = await _picker.getLostData();
+    final LostDataResponse response = await _picker.retrieveLostData();
     if (response.isEmpty) {
       return;
     }
@@ -188,57 +188,4 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     }
     return null;
   }
-
-  Future<void> _displayPickImageDialog(
-      BuildContext context, OnPickImageCallback onPick) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Add optional parameters'),
-            content: Column(
-              children: <Widget>[
-                TextField(
-                  controller: maxWidthController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration:
-                      InputDecoration(hintText: "Enter maxWidth if desired"),
-                ),
-                TextField(
-                  controller: maxHeightController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration:
-                      InputDecoration(hintText: "Enter maxHeight if desired"),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                  child: const Text('PICK'),
-                  onPressed: () {
-                    double? width = maxWidthController.text.isNotEmpty
-                        ? double.parse(maxWidthController.text)
-                        : null;
-                    double? height = maxHeightController.text.isNotEmpty
-                        ? double.parse(maxHeightController.text)
-                        : null;
-
-                    onPick(
-                      width,
-                      height,
-                    );
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          );
-        });
-  }
 }
-
-typedef void OnPickImageCallback(double? maxWidth, double? maxHeight);

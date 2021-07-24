@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../application/auth/auth_bloc.dart';
-import '../core/colors.dart';
 import '../routes/router.gr.dart';
 
 class SplashPage extends StatelessWidget {
@@ -25,7 +24,7 @@ class SplashPage extends StatelessWidget {
           body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             height: 190,
             width: 200,
             child: Image.asset('assets/images/crime_map.png'),

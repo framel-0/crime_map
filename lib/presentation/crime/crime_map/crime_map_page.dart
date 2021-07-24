@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../application/auth/auth_bloc.dart';
 import '../../../application/crime/crime_actor/crime_actor_bloc.dart';
@@ -31,6 +32,14 @@ class CrimeMapPage extends StatelessWidget {
             listener: (ctx, state) {
               state.maybeMap(
                   unauthenticated: (_) {
+                    Fluttertoast.showToast(
+                      msg: "SignOut Successful",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.blueAccent,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
                     AutoRouter.of(context).replace(const SignInRoute());
                   },
                   orElse: () {});
@@ -51,6 +60,7 @@ class CrimeMapPage extends StatelessWidget {
                     .add(const AuthEvent.signedOut());
               },
             ),
+            title: const Text('Crime Map'),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {

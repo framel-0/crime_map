@@ -22,16 +22,16 @@ class _$CrimeDtoTearOff {
 
   _CrimeDto call(
       {@JsonKey(ignore: true) String? id,
-      String? image,
+      required String image,
       required double latitude,
       required double longitude,
-      @ServerTimeStampConverter() required FieldValue serverTimeStamp}) {
+      int reportNumber = 1}) {
     return _CrimeDto(
       id: id,
       image: image,
       latitude: latitude,
       longitude: longitude,
-      serverTimeStamp: serverTimeStamp,
+      reportNumber: reportNumber,
     );
   }
 
@@ -47,11 +47,10 @@ const $CrimeDto = _$CrimeDtoTearOff();
 mixin _$CrimeDto {
   @JsonKey(ignore: true)
   String? get id => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
-  @ServerTimeStampConverter()
-  FieldValue get serverTimeStamp => throw _privateConstructorUsedError;
+  int get reportNumber => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -65,10 +64,10 @@ abstract class $CrimeDtoCopyWith<$Res> {
       _$CrimeDtoCopyWithImpl<$Res>;
   $Res call(
       {@JsonKey(ignore: true) String? id,
-      String? image,
+      String image,
       double latitude,
       double longitude,
-      @ServerTimeStampConverter() FieldValue serverTimeStamp});
+      int reportNumber});
 }
 
 /// @nodoc
@@ -85,7 +84,7 @@ class _$CrimeDtoCopyWithImpl<$Res> implements $CrimeDtoCopyWith<$Res> {
     Object? image = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
-    Object? serverTimeStamp = freezed,
+    Object? reportNumber = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -95,7 +94,7 @@ class _$CrimeDtoCopyWithImpl<$Res> implements $CrimeDtoCopyWith<$Res> {
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
@@ -104,10 +103,10 @@ class _$CrimeDtoCopyWithImpl<$Res> implements $CrimeDtoCopyWith<$Res> {
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-      serverTimeStamp: serverTimeStamp == freezed
-          ? _value.serverTimeStamp
-          : serverTimeStamp // ignore: cast_nullable_to_non_nullable
-              as FieldValue,
+      reportNumber: reportNumber == freezed
+          ? _value.reportNumber
+          : reportNumber // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -119,10 +118,10 @@ abstract class _$CrimeDtoCopyWith<$Res> implements $CrimeDtoCopyWith<$Res> {
   @override
   $Res call(
       {@JsonKey(ignore: true) String? id,
-      String? image,
+      String image,
       double latitude,
       double longitude,
-      @ServerTimeStampConverter() FieldValue serverTimeStamp});
+      int reportNumber});
 }
 
 /// @nodoc
@@ -140,7 +139,7 @@ class __$CrimeDtoCopyWithImpl<$Res> extends _$CrimeDtoCopyWithImpl<$Res>
     Object? image = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
-    Object? serverTimeStamp = freezed,
+    Object? reportNumber = freezed,
   }) {
     return _then(_CrimeDto(
       id: id == freezed
@@ -150,7 +149,7 @@ class __$CrimeDtoCopyWithImpl<$Res> extends _$CrimeDtoCopyWithImpl<$Res>
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
@@ -159,10 +158,10 @@ class __$CrimeDtoCopyWithImpl<$Res> extends _$CrimeDtoCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-      serverTimeStamp: serverTimeStamp == freezed
-          ? _value.serverTimeStamp
-          : serverTimeStamp // ignore: cast_nullable_to_non_nullable
-              as FieldValue,
+      reportNumber: reportNumber == freezed
+          ? _value.reportNumber
+          : reportNumber // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -173,10 +172,10 @@ class __$CrimeDtoCopyWithImpl<$Res> extends _$CrimeDtoCopyWithImpl<$Res>
 class _$_CrimeDto extends _CrimeDto {
   const _$_CrimeDto(
       {@JsonKey(ignore: true) this.id,
-      this.image,
+      required this.image,
       required this.latitude,
       required this.longitude,
-      @ServerTimeStampConverter() required this.serverTimeStamp})
+      this.reportNumber = 1})
       : super._();
 
   factory _$_CrimeDto.fromJson(Map<String, dynamic> json) =>
@@ -186,18 +185,18 @@ class _$_CrimeDto extends _CrimeDto {
   @JsonKey(ignore: true)
   final String? id;
   @override
-  final String? image;
+  final String image;
   @override
   final double latitude;
   @override
   final double longitude;
+  @JsonKey(defaultValue: 1)
   @override
-  @ServerTimeStampConverter()
-  final FieldValue serverTimeStamp;
+  final int reportNumber;
 
   @override
   String toString() {
-    return 'CrimeDto(id: $id, image: $image, latitude: $latitude, longitude: $longitude, serverTimeStamp: $serverTimeStamp)';
+    return 'CrimeDto(id: $id, image: $image, latitude: $latitude, longitude: $longitude, reportNumber: $reportNumber)';
   }
 
   @override
@@ -214,9 +213,9 @@ class _$_CrimeDto extends _CrimeDto {
             (identical(other.longitude, longitude) ||
                 const DeepCollectionEquality()
                     .equals(other.longitude, longitude)) &&
-            (identical(other.serverTimeStamp, serverTimeStamp) ||
+            (identical(other.reportNumber, reportNumber) ||
                 const DeepCollectionEquality()
-                    .equals(other.serverTimeStamp, serverTimeStamp)));
+                    .equals(other.reportNumber, reportNumber)));
   }
 
   @override
@@ -226,7 +225,7 @@ class _$_CrimeDto extends _CrimeDto {
       const DeepCollectionEquality().hash(image) ^
       const DeepCollectionEquality().hash(latitude) ^
       const DeepCollectionEquality().hash(longitude) ^
-      const DeepCollectionEquality().hash(serverTimeStamp);
+      const DeepCollectionEquality().hash(reportNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -241,12 +240,11 @@ class _$_CrimeDto extends _CrimeDto {
 
 abstract class _CrimeDto extends CrimeDto {
   const factory _CrimeDto(
-          {@JsonKey(ignore: true) String? id,
-          String? image,
-          required double latitude,
-          required double longitude,
-          @ServerTimeStampConverter() required FieldValue serverTimeStamp}) =
-      _$_CrimeDto;
+      {@JsonKey(ignore: true) String? id,
+      required String image,
+      required double latitude,
+      required double longitude,
+      int reportNumber}) = _$_CrimeDto;
   const _CrimeDto._() : super._();
 
   factory _CrimeDto.fromJson(Map<String, dynamic> json) = _$_CrimeDto.fromJson;
@@ -255,14 +253,13 @@ abstract class _CrimeDto extends CrimeDto {
   @JsonKey(ignore: true)
   String? get id => throw _privateConstructorUsedError;
   @override
-  String? get image => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
   @override
   double get latitude => throw _privateConstructorUsedError;
   @override
   double get longitude => throw _privateConstructorUsedError;
   @override
-  @ServerTimeStampConverter()
-  FieldValue get serverTimeStamp => throw _privateConstructorUsedError;
+  int get reportNumber => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CrimeDtoCopyWith<_CrimeDto> get copyWith =>

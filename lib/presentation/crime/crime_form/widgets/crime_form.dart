@@ -32,47 +32,54 @@ class _CrimeFormState extends State<CrimeForm> {
                 vertical: 10.0,
                 horizontal: 16.0,
               ),
-              child: Column(
-                children: [
-                  _formSpace(),
-                  EventLocationField(),
-                  _formSpace(),
-                  ImageField(),
-                  _formSpace(),
-                  Container(
-                    child: path == null
-                        ? Container()
-                        : Container(
-                            height: 280,
-                            child: Image.file(
-                              File(path!),
-                              fit: BoxFit.fitHeight,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _formSpace(),
+                    EventLocationField(),
+                    _formSpace(),
+                    ImageField(),
+                    _formSpace(),
+                    Container(
+                      child: path == null
+                          ? Container()
+                          : SizedBox(
+                              height: 280,
+                              child: Image.file(
+                                File(path!),
+                                fit: BoxFit.fitHeight,
+                              ),
                             ),
-                          ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      // shape: const RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                      //     side: BorderSide(color: Colors.white)),
-                      // padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      onPressed: () => context
-                          .read<CrimeFormBloc>()
-                          .add(const CrimeFormEvent.saved()),
-                      child: const Text(
-                        'SUBMIT',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                              side: BorderSide(color: Colors.white)),
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        ),
+                        onPressed: () => context
+                            .read<CrimeFormBloc>()
+                            .add(const CrimeFormEvent.saved()),
+                        child: const Text(
+                          'SUBMIT',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

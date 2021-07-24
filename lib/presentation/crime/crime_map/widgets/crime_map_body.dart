@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:crime_map/presentation/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,10 +13,8 @@ class CrimeMapBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late GoogleMapController _controller;
-
     const CameraPosition _kGooglePlex = CameraPosition(
-      target: LatLng(37.42796133580664, -122.085749655962),
+      target: LatLng(5.603730104902301, -0.18697738019649837),
       zoom: 14.4746,
     );
 
@@ -29,13 +29,17 @@ class CrimeMapBody extends StatelessWidget {
             // return Container();
             return GoogleMap(
               initialCameraPosition: _kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
-                _controller = controller;
-              },
+              onMapCreated: (GoogleMapController controller) {},
               myLocationEnabled: true,
+              zoomControlsEnabled: false,
               markers: state.crimes.iter
                   .map(
-                    (e) => _registerMarker(crime: e),
+                    (e) => _registerMarker(
+                      onTapInfoWindow: () => AutoRouter.of(context).push(
+                        CrimeDetailRoute(crime: e),
+                      ),
+                      crime: e,
+                    ),
                   )
                   .toSet(),
             );
@@ -49,15 +53,19 @@ class CrimeMapBody extends StatelessWidget {
   }
 
   Marker _registerMarker({
-    GestureTapCallback? onTapMarker,
+    GestureTapCallback? onTapInfoWindow,
     required Crime crime,
   }) {
     return Marker(
-      onTap: onTapMarker,
-      markerId: MarkerId(crime.id.toString()),
+      markerId: MarkerId(crime.reportNumber.toString()),
       position:
           LatLng(crime.latitude.getOrCrash(), crime.longitude.getOrCrash()),
-      infoWindow: const InfoWindow(title: ''),
+      infoWindow: InfoWindow(
+        title:
+            'Location: ${crime.latitude.getOrCrash()} , ${crime.longitude.getOrCrash()}',
+        snippet: 'Report Number: ${crime.reportNumber}',
+        onTap: onTapInfoWindow,
+      ),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
   }

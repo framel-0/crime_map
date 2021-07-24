@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../application/auth/auth_bloc.dart';
 import '../../../application/auth/sign_in_form/sign_in_form_bloc.dart';
-import '../../core/colors.dart';
 import '../../routes/router.gr.dart';
 
 class SignInForm extends StatelessWidget {
@@ -17,6 +17,17 @@ class SignInForm extends StatelessWidget {
           () {},
           (either) => either.fold(
             (f) {
+              Fluttertoast.showToast(
+                msg: f.map(
+                  canceledByUser: (_) => 'Canceled by User',
+                  serverError: (_) => 'Server Error',
+                ),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
               // FlushbarHelper.createError(
               //   message: f.map(
               //       canceledByUser: (_) => '',
@@ -24,6 +35,14 @@ class SignInForm extends StatelessWidget {
               // ).show(context);
             },
             (_) {
+              Fluttertoast.showToast(
+                msg: "SignIn Successful",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.greenAccent,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
               context.router.replace(const CrimeMapRoute());
               context
                   .read<AuthBloc>()
@@ -44,7 +63,7 @@ class SignInForm extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     height: 180,
                     width: 200,
                     child: Image.asset('assets/images/crime_map.png'),

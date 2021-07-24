@@ -20,12 +20,12 @@ class SavingInProgressOverlay extends StatelessWidget {
           visible: isSaving,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const CircularProgressIndicator(),
-              const SizedBox(
+            children: const [
+              CircularProgressIndicator(),
+              SizedBox(
                 height: 8.0,
               ),
-              Text('')
+              Text('Please Wait')
             ],
           ),
         ),

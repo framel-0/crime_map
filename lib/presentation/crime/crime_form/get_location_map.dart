@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../../core/colors.dart';
 
 class GetLocationMap extends StatefulWidget {
   @override
@@ -12,9 +8,9 @@ class GetLocationMap extends StatefulWidget {
 }
 
 class _GetLocationMapState extends State<GetLocationMap> {
-  Completer<GoogleMapController> _controller = Completer();
   late GoogleMapController mapController;
-  late LatLng latLng;
+  LatLng initalPosition = const LatLng(5.603730104902301, -0.18697738019649837);
+  LatLng latLng = const LatLng(5.603730104902301, -0.18697738019649837);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +21,8 @@ class _GetLocationMapState extends State<GetLocationMap> {
       body: Stack(
         children: [
           GoogleMap(
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(0.0, 0.0),
+            initialCameraPosition: CameraPosition(
+              target: initalPosition,
               zoom: 13,
             ),
             onMapCreated: onCreated,
@@ -34,12 +30,10 @@ class _GetLocationMapState extends State<GetLocationMap> {
             // ignore: prefer_collection_literals
             markers: [
               Marker(
-                onTap: () {
-                  print('Tapped');
-                },
+                onTap: () {},
                 draggable: true,
-                markerId: MarkerId('Marker'),
-                position: LatLng(0.0, 0.0),
+                markerId: const MarkerId('Marker'),
+                position: initalPosition,
                 onDragEnd: (newPosition) {
                   // print('${newPosition.latitude} ${newPosition.longitude}');
                   latLng = newPosition;
@@ -51,16 +45,19 @@ class _GetLocationMapState extends State<GetLocationMap> {
             padding: const EdgeInsets.all(8.0),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: RaisedButton.icon(
+              child: ElevatedButton.icon(
                 onPressed: () => context.router.pop(latLng),
                 icon: const Icon(Icons.add_location_outlined),
-                color: colorSecondary,
-                label: const Text('Set Location'),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: 15.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                textColor: Colors.white,
+                label: const Text('Select Location'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.teal,
+                  onPrimary: Colors.white,
+                  onSurface: Colors.grey,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 15.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                ),
               ),
             ),
           ),
@@ -72,9 +69,7 @@ class _GetLocationMapState extends State<GetLocationMap> {
     );
   }
 
-  onCreated(GoogleMapController controller) {
-    setState(() {
-      mapController = controller;
-    });
-  }
+  void onCreated(GoogleMapController controller) => setState(() {
+        mapController = controller;
+      });
 }

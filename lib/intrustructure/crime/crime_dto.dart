@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crime_map/domain/core/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../domain/core/value_objects.dart';
 import '../../domain/crime/crime.dart';
 import '../../domain/crime/value_objects.dart';
 
@@ -13,29 +13,31 @@ abstract class CrimeDto implements _$CrimeDto {
   @JsonSerializable()
   const factory CrimeDto({
     @JsonKey(ignore: true) String? id,
-    String? image,
+    required String image,
     required double latitude,
     required double longitude,
-    @ServerTimeStampConverter() required FieldValue serverTimeStamp,
+    @Default(1) int reportNumber,
   }) = _CrimeDto;
 
   const CrimeDto._();
 
   factory CrimeDto.fromDomain(Crime crime) {
     return CrimeDto(
-        id: crime.id.getOrCrash(),
-        latitude: crime.latitude.getOrCrash(),
-        longitude: crime.longitude.getOrCrash(),
-        image: crime.image,
-        serverTimeStamp: FieldValue.serverTimestamp());
+      id: crime.id.getOrCrash(),
+      latitude: crime.latitude.getOrCrash(),
+      longitude: crime.longitude.getOrCrash(),
+      image: crime.image.getOrCrash(),
+      reportNumber: crime.reportNumber,
+    );
   }
 
   Crime toDomain() {
     return Crime(
-      id: UniqueId(),
-      image: image,
+      id: UniqueId.fromUniqueString(id!),
       latitude: CrimeLatitude(latitude),
       longitude: CrimeLongitude(longitude),
+      image: CrimeImage(image),
+      reportNumber: reportNumber,
     );
   }
 
@@ -43,19 +45,7 @@ abstract class CrimeDto implements _$CrimeDto {
       _$CrimeDtoFromJson(json);
 
   factory CrimeDto.fromFirestore(DocumentSnapshot doc) {
-    final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data()! as Map<String, dynamic>;
     return CrimeDto.fromJson(data).copyWith(id: doc.id);
   }
-}
-
-class ServerTimeStampConverter implements JsonConverter<FieldValue, Object> {
-  const ServerTimeStampConverter();
-
-  @override
-  FieldValue fromJson(Object json) {
-    return FieldValue.serverTimestamp();
-  }
-
-  @override
-  Object toJson(FieldValue fieldValue) => fieldValue;
 }

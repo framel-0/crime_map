@@ -20,8 +20,8 @@ class _$CrimeTearOff {
       {required UniqueId id,
       required CrimeLatitude latitude,
       required CrimeLongitude longitude,
-      String? image,
-      String? reportNumber}) {
+      required CrimeImage image,
+      int reportNumber = 1}) {
     return _Crime(
       id: id,
       latitude: latitude,
@@ -40,8 +40,8 @@ mixin _$Crime {
   UniqueId get id => throw _privateConstructorUsedError;
   CrimeLatitude get latitude => throw _privateConstructorUsedError;
   CrimeLongitude get longitude => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
-  String? get reportNumber => throw _privateConstructorUsedError;
+  CrimeImage get image => throw _privateConstructorUsedError;
+  int get reportNumber => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CrimeCopyWith<Crime> get copyWith => throw _privateConstructorUsedError;
@@ -55,8 +55,8 @@ abstract class $CrimeCopyWith<$Res> {
       {UniqueId id,
       CrimeLatitude latitude,
       CrimeLongitude longitude,
-      String? image,
-      String? reportNumber});
+      CrimeImage image,
+      int reportNumber});
 }
 
 /// @nodoc
@@ -91,11 +91,11 @@ class _$CrimeCopyWithImpl<$Res> implements $CrimeCopyWith<$Res> {
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as CrimeImage,
       reportNumber: reportNumber == freezed
           ? _value.reportNumber
           : reportNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int,
     ));
   }
 }
@@ -109,8 +109,8 @@ abstract class _$CrimeCopyWith<$Res> implements $CrimeCopyWith<$Res> {
       {UniqueId id,
       CrimeLatitude latitude,
       CrimeLongitude longitude,
-      String? image,
-      String? reportNumber});
+      CrimeImage image,
+      int reportNumber});
 }
 
 /// @nodoc
@@ -146,11 +146,11 @@ class __$CrimeCopyWithImpl<$Res> extends _$CrimeCopyWithImpl<$Res>
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as CrimeImage,
       reportNumber: reportNumber == freezed
           ? _value.reportNumber
           : reportNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int,
     ));
   }
 }
@@ -162,8 +162,8 @@ class _$_Crime extends _Crime {
       {required this.id,
       required this.latitude,
       required this.longitude,
-      this.image,
-      this.reportNumber})
+      required this.image,
+      this.reportNumber = 1})
       : super._();
 
   @override
@@ -173,9 +173,10 @@ class _$_Crime extends _Crime {
   @override
   final CrimeLongitude longitude;
   @override
-  final String? image;
+  final CrimeImage image;
+  @JsonKey(defaultValue: 1)
   @override
-  final String? reportNumber;
+  final int reportNumber;
 
   @override
   String toString() {
@@ -221,8 +222,8 @@ abstract class _Crime extends Crime {
       {required UniqueId id,
       required CrimeLatitude latitude,
       required CrimeLongitude longitude,
-      String? image,
-      String? reportNumber}) = _$_Crime;
+      required CrimeImage image,
+      int reportNumber}) = _$_Crime;
   const _Crime._() : super._();
 
   @override
@@ -232,9 +233,9 @@ abstract class _Crime extends Crime {
   @override
   CrimeLongitude get longitude => throw _privateConstructorUsedError;
   @override
-  String? get image => throw _privateConstructorUsedError;
+  CrimeImage get image => throw _privateConstructorUsedError;
   @override
-  String? get reportNumber => throw _privateConstructorUsedError;
+  int get reportNumber => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CrimeCopyWith<_Crime> get copyWith => throw _privateConstructorUsedError;

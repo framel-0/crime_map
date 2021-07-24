@@ -18,7 +18,7 @@ class CrimeMapCriticalFailure extends StatelessWidget {
               style: TextStyle(fontSize: 30.0),
               textAlign: TextAlign.center,
             ),
-            FlatButton(
+            TextButton(
               onPressed: () {},
               child: Row(
                 mainAxisSize: MainAxisSize.min,

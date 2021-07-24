@@ -18,23 +18,24 @@ class EventLocationField extends HookWidget {
             previous.crime.latitude != current.crime.latitude,
         builder: (context, state) {
           return TextFormField(
+            readOnly: true,
             controller: textEditingController,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
-            decoration: textDecoration(label: 'crime Location'),
+            decoration: textDecoration(label: 'Crime Location'),
             onTap: () async {
-              // final LatLng? res =
-              //     await context.router.push(const GetLocationMap()) as LatLng?;
-              // //  ExtendedNavigator.of(context)
-              // //     .pushGetLocationMap() as LatLng;
+              final LatLng? res =
+                  await context.router.push(const GetLocationMap()) as LatLng?;
+              //  ExtendedNavigator.of(context)
+              //     .pushGetLocationMap() as LatLng;
 
-              // if (res != null) {
-              //   await getLoc(res.latitude, res.longitude)
-              //       .then((value) => textEditingController.text = value);
-              //   context.read<CrimeFormBloc>().add(
-              //         CrimeFormEvent.locationChanged(res),
-              //       );
-              // }
+              if (res != null) {
+                await getLoc(res.latitude, res.longitude)
+                    .then((value) => textEditingController.text = value);
+                context.read<CrimeFormBloc>().add(
+                      CrimeFormEvent.locationChanged(res),
+                    );
+              }
             },
             validator: (value) =>
                 context.read<CrimeFormBloc>().state.crime.latitude.value.fold(
@@ -59,11 +60,5 @@ class EventLocationField extends HookWidget {
     }, ' ,');
 
     return buffer.toString();
-  }
-
-  Widget _formSpace() {
-    return const SizedBox(
-      height: 12,
-    );
   }
 }
