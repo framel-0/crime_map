@@ -54,7 +54,10 @@ class CrimeMapPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
-              icon: const Icon(Icons.exit_to_app),
+              icon: const Icon(
+                Icons.exit_to_app,
+                semanticLabel: 'Logout',
+              ),
               onPressed: () {
                 BlocProvider.of<AuthBloc>(context)
                     .add(const AuthEvent.signedOut());

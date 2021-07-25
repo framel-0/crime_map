@@ -66,7 +66,21 @@ class CrimeMapBody extends StatelessWidget {
         snippet: 'Report Number: ${crime.reportNumber}',
         onTap: onTapInfoWindow,
       ),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      icon: mapMarkers(crime.reportNumber),
     );
+  }
+
+  BitmapDescriptor mapMarkers(int reportNumber) {
+    late double markerColor;
+    if (reportNumber < 5) {
+      markerColor = BitmapDescriptor.hueGreen;
+    }
+    if (reportNumber >= 5 && reportNumber <= 20) {
+      markerColor = BitmapDescriptor.hueOrange;
+    }
+    if (reportNumber > 20) {
+      markerColor = BitmapDescriptor.hueRed;
+    }
+    return BitmapDescriptor.defaultMarkerWithHue(markerColor);
   }
 }

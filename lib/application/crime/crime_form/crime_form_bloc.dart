@@ -47,7 +47,7 @@ class CrimeFormBloc extends Bloc<CrimeFormEvent, CrimeFormState> {
         ));
       },
       saved: (e) async* {
-        late Either<CrimeFailure, Unit> failureOrSuccess;
+        Either<CrimeFailure, Unit> failureOrSuccess;
 
         yield state.copyWith(
           isSaving: true,
@@ -56,11 +56,11 @@ class CrimeFormBloc extends Bloc<CrimeFormEvent, CrimeFormState> {
 
         final isDescriptionValid = state.crime.failureOption.isNone();
 
-        if (isDescriptionValid) {
-          failureOrSuccess = state.isEditing
-              ? await _eventRepository.update(state.crime)
-              : await _eventRepository.create(state.crime);
-        }
+        // if (isDescriptionValid) {
+        failureOrSuccess = state.isEditing
+            ? await _eventRepository.update(state.crime)
+            : await _eventRepository.create(state.crime);
+        // }
 
         yield state.copyWith(
           isSaving: false,

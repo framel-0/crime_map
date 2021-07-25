@@ -48,19 +48,25 @@ class CrimeRpository implements ICrimeRepository {
   @override
   Future<Either<CrimeFailure, Unit>> create(Crime crime) async {
     try {
-      final File file = File(crime.image.getOrCrash());
-      final imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
-      final Reference ref =
-          _firebaseStorage.imagesReference.child(imageFileName);
+      final KtList<CrimeDto> crimes = await getCrimesList();
 
-      final UploadTask uploadTask = ref.putFile(file);
-      final storageSnapshot = await uploadTask;
-      final downloadUrl = await storageSnapshot.ref.getDownloadURL();
-      final crimeI = crime.copyWith(image: CrimeImage(downloadUrl.toString()));
+      final crimeF = crimes.singleOrNull((c) =>
+          c.latitude == crime.latitude.getOrCrash() &&
+          c.longitude == crime.longitude.getOrCrash());
 
-      final crimeDoc = _firebaseFirestore.crimeCollection;
-      final crimeDto = CrimeDto.fromDomain(crimeI);
-      await crimeDoc.doc(crimeDto.id).set(crimeDto.toJson());
+      if (crimeF == null) {
+        final String downloadUrl = await uploadImage(crime);
+        final crimeI =
+            crime.copyWith(image: CrimeImage(downloadUrl.toString()));
+
+        final crimeDoc = _firebaseFirestore.crimeCollection;
+        final crimeDto = CrimeDto.fromDomain(crimeI);
+        await crimeDoc.doc(crimeDto.id).set(crimeDto.toJson());
+      } else {
+        final crimeDoc = _firebaseFirestore.crimeCollection;
+        final crimeDto = crimeF.copyWith(reportNumber: crimeF.reportNumber + 1);
+        await crimeDoc.doc(crimeDto.id).update(crimeDto.toJson());
+      }
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -70,6 +76,31 @@ class CrimeRpository implements ICrimeRepository {
         return left(const CrimeFailure.unexpected());
       }
     }
+  }
+
+  Future<KtList<CrimeDto>> getCrimesList() async {
+    final crimes = await _firebaseFirestore.crimeCollection
+        .snapshots()
+        .map(
+          (event) => event.docs
+              .map(
+                (doc) => CrimeDto.fromFirestore(doc),
+              )
+              .toImmutableList(),
+        )
+        .first;
+    return crimes;
+  }
+
+  Future<String> uploadImage(Crime crime) async {
+    final File file = File(crime.image.getOrCrash());
+    final imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
+    final Reference ref = _firebaseStorage.imagesReference.child(imageFileName);
+
+    final UploadTask uploadTask = ref.putFile(file);
+    final storageSnapshot = await uploadTask;
+    final downloadUrl = await storageSnapshot.ref.getDownloadURL();
+    return downloadUrl;
   }
 
   @override

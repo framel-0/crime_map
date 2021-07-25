@@ -38,15 +38,6 @@ class CrimeFormPage extends StatelessWidget {
               return Text(state.isEditing ? 'Edit a Crime' : 'Add a Crime');
             },
           ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                return BlocProvider.of<CrimeFormBloc>(context)
-                    .add(const CrimeFormEvent.saved());
-              },
-              icon: const Icon(Icons.check),
-            )
-          ],
         ),
         body: const CrimeFormPageScaffold(),
       ),
