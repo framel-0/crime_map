@@ -11,7 +11,7 @@ import '../../domain/crime/crime.dart';
 import '../../domain/crime/crime_failure.dart';
 import '../../domain/crime/i_crime_repository.dart';
 import '../../domain/crime/value_objects.dart';
-import '../core/firestore_helpers.dart';
+import '../core/firebase_helpers.dart';
 import 'crime_dto.dart';
 
 @LazySingleton(as: ICrimeRepository)
