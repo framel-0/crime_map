@@ -29,6 +29,7 @@ class AppWidget extends StatelessWidget {
           }
         },
         child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           title: 'Crime Map',
           routerDelegate: _appRouter.delegate(),
           routeInformationParser: _appRouter.defaultRouteParser(),

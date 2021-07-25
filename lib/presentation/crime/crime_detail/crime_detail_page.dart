@@ -1,6 +1,7 @@
-import 'package:crime_map/domain/crime/crime.dart';
-import 'package:crime_map/presentation/core/colors.dart';
 import 'package:flutter/material.dart';
+
+import '../../../domain/crime/crime.dart';
+import '../../core/colors.dart';
 
 class CrimeDetailPage extends StatelessWidget {
   const CrimeDetailPage({Key? key, required this.crime}) : super(key: key);

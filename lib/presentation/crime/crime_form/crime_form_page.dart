@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:crime_map/application/crime/crime_watcher/crime_watcher_bloc.dart';
 import 'package:dartz/dartz.dart' as dtz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../application/crime/crime_form/crime_form_bloc.dart';
+import '../../../application/crime/crime_watcher/crime_watcher_bloc.dart';
 import '../../../domain/crime/crime.dart';
 import '../../../injection.dart';
 import '../../routes/router.gr.dart';
